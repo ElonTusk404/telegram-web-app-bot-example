@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Смайлик с анимацией</title>
+    <title>Анимированная Монетка</title>
     <style>
         body {
             display: flex;
@@ -18,11 +18,12 @@
             text-align: center;
         }
 
-        .smiley {
+        .coin {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-color: yellow;
+            background: radial-gradient(circle, #ffd700, #ffa500);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,24 +31,13 @@
             transition: transform 0.2s ease;
         }
 
-        .smiley.active {
+        .coin.active {
             transform: scale(1.2);
         }
 
-        .smiley .eyes {
-            width: 15px;
-            height: 15px;
-            background-color: black;
-            border-radius: 50%;
-            margin: 10px;
-        }
-
-        .smiley .mouth {
-            width: 40px;
-            height: 10px;
-            background-color: black;
-            border-radius: 10px;
-            margin-top: 20px;
+        .coin .symbol {
+            font-size: 40px;
+            color: black;
         }
 
         .count {
@@ -82,10 +72,8 @@
 </head>
 <body>
     <div class="container">
-        <div class="smiley" id="smiley">
-            <div class="eyes"></div>
-            <div class="eyes"></div>
-            <div class="mouth"></div>
+        <div class="coin" id="coin">
+            <div class="symbol">💰</div>
         </div>
         <div class="count" id="count">0</div>
 
@@ -96,17 +84,31 @@
         </div>
     </div>
 
+    <!-- Добавляем аудио -->
+    <audio id="coin-sound" src="coin-sound.mp3"></audio>
+
     <script>
-        const smiley = document.getElementById('smiley');
+        const coin = document.getElementById('coin');
         const count = document.getElementById('count');
+        const coinSound = document.getElementById('coin-sound');
         let counter = 0;
 
-        smiley.addEventListener('click', () => {
-            smiley.classList.add('active');
+        coin.addEventListener('click', () => {
+            // Добавляем вибрацию
+            if (navigator.vibrate) {
+                navigator.vibrate(200); // Вибрация на 200 мс
+            }
+
+            // Проигрываем звук
+            coinSound.play();
+
+            // Анимация монетки
+            coin.classList.add('active');
             setTimeout(() => {
-                smiley.classList.remove('active');
+                coin.classList.remove('active');
             }, 200);
 
+            // Увеличиваем счетчик
             counter++;
             count.textContent = counter;
         });
